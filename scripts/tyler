@@ -1,0 +1,123 @@
+#!/usr/bin/env python
+
+import argparse
+import random
+import termcolor
+
+
+RANT = '''
+all you negative muthafuckas should look at me as inspiration.
+im 23 fucking years old and built a fucking monster and im not ever gonna fucking land.
+
+stop being scary and neagtive and start believing in yourself and stop living for all these other fucking idiots.
+
+some of yall should put that fucking blunt down and go do what the fuck you know you need to do.
+do it for yourself, i believe in everyone because i believe in myself.
+
+fuck reaching for the stars, thats setting a limit, fuck those.
+
+some of you dont like yourself.
+some of you arent comfortable with yourself.
+thats so fucking sad.
+stop that shit.
+
+but some of you cant.
+thats why yall ask for likes on instagram and shit, cause yall self esteem so fucking low.
+cut that shit out and start liking yourself.
+when that happens, you will start trusting yourself, then you trust your ideas, then you fucking become that person you really want to be.
+
+if you dont have any confidence let me be your fucking confidence.
+
+im gonna be a fucking great years from now and i fully believe that and fully do not care about ANYONES opinion on why im not because i KNOW.
+
+start smiling more and start hanging around people that makes you feel good or make you want to be better.
+
+stop associating with LOSERS.
+if a nigga only hits you up to smoke or drink or turn up and have nothing else to offer to get you where ever you think about being when you are alone daydreaming THEN GET THE FUCK AWAY FROM THEM.
+
+time is going by soooo fast and before you know it you;re gonna be on your deathbed telling stories about how much you sucked and how you regret not living the life you wanted to live, loving the people you wanted to love, taking the chances you wanted to take.
+
+THERE ARE NO RULES, FUCK THE RULES.
+GO.
+FIND YOUR WINGS.
+I FOUND MY WINGS AND IM STILL FLYING AND I WILL NEVER EVER LAND.
+
+but some of you have to find yourself ya know.
+i knew the who i was at like age 10.
+i knew the music i loved the colors i knew what i was into.
+most of you listen to what ever is hot or what your friends like, yall dress how everyone else dress, yall do what everyone else do.
+FUCKING STOP BEING A FUCKING FOLLOWER.
+
+read the comments, the weak ass follower that will never make a difference ever cause they fucking SUCK are gonna say some shit like " easier said than done" or " you are a hyporcrite" or " you changed" or some stupid shit like that, cause they are most like the weak fuck im talking about and cant cope with it, cause they are scared.
+DONT BE SCARED.
+
+idk why im typing this.
+im on a lake on vacation just drawing and listening to music ( been playing CC The World for like 6 hours) and just realized oh wow, im on a vacation for no reason, this is crazy, ive dreamed of this, how did i get this far, oh yeah, by trusting myself and not following that path my mom wanted me to go, and surround myself with other people that wanted more outta like and trust my wild ideas, and i put my art out and people liked it and trusted me, and now im here.
+
+i guess what im trying to say is i want everyone to win.
+i want everyone to smile, i want everyone to be in a good mood and as annoying and always jumping around like me cause im so fucking happy and grateful, but i realize niggas is scared.
+or who knows, maybe im just a special one.
+i dont know anything.
+
+im in the woods and i really want to meet a moose in person if i see one im gonna get a photo hahahahahaha oh and RACISM IS FUCKING WEAK AS FUCK anti golf boys and oh this saturday another F/W drop from GOLF.
+
+love you, today i want you to find your wings.
+'''
+
+
+def process_word(word):
+    attrs = []
+    alphabet = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ.,')
+    if len(set(word) - alphabet) == 0 and word != 'CC':
+        attrs.append('bold')
+    word = termcolor.colored(word, attrs=attrs)
+    return word
+
+def process_sentence(sentence):
+    words = sentence.split(' ')
+    words = [process_word(word) for word in words]
+    sentence = ' '.join(words)
+    return sentence
+
+def process_text(text):
+    sentences = text.split('\n')
+    sentences = [process_sentence(sentence) for sentence in sentences]
+    text = '\n'.join(sentences)
+    return text
+
+def wrap_text(text):
+    lines = []
+    line = []
+    words = text.split()
+    for word in words:
+        line.append(word)
+        if len(line) >= 15:
+            lines.append(' '.join(line))
+            line = []
+    if len(line) > 0:
+        lines.append(' '.join(line))
+    text = '\n'.join(lines)
+    return text
+
+def main(args):
+    parts = RANT.strip().split('\n\n')
+    if args.full:
+        text = '\n'.join(parts)
+        text = process_text(text)
+    else:
+        num_parts = len(parts)
+        part = parts[random.choice(range(num_parts))]
+        text = process_text(part)
+
+    print
+    print wrap_text(text)
+    print
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--full',
+                        action='store_true',
+                        help='Let Tyler go full raw.')
+    args = parser.parse_args()
+    main(args)
